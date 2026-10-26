@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#075e54">
+  <title>VOZZA â€” Africa Connects</title>
+  <style>
+    :root {
+      --green: #075e54;
+      --orange: #ff9f1c;
+      --bg: #f4f7f6;
+      --white: #ffffff;
+      --text: #182522;
+      --muted: #71807b;
+      --border: #e1e9e6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+    }
+
+    .topbar {
+      max-width: 760px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: -1px;
+    }
+
+    .logo span { color: var(--orange); }
+
+    .tagline { font-size: 11px; color: var(--muted); }
+
+    .search {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 12px;
+      background: var(--bg);
+    }
+
+    main {
+      max-width: 760px;
+      margin: auto;
+      padding: 14px 12px 100px;
+    }
+
+    .notice {
+      background: #fff4df;
+      color: #754900;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: white;
+      padding: 9px 15px;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: var(--green);
+      color: white;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #d7eee5;
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      color: var(--green);
+    }
+
+    .muted { color: var(--muted); font-size: 12px; }
+    .grow { flex: 1; }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      background: var(--green);
+      color: white;
+      padding: 10px 13px;
+      font-weight: 700;
+    }
+
+    .btn.orange { background: var(--orange); color: #241800; }
+    .btn.light { background: #e8f3ef; color: var(--green); }
+    .btn.small { padding: 7px 10px; font-size: 12px; }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .stories {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      margin-bottom: 14px;
+    }
+
+    .story {
+      text-align: center;
+      min-width: 65px;
+      font-size: 12px;
+    }
+
+    .story .avatar {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 6px;
+      border: 3px solid var(--orange);
+    }
+
+    .media {
+      margin-top: 12px;
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #e9f0ed;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background: #edf2f0;
+      border-radius: 10px;
+    }
+
+    .price {
+      color: var(--green);
+      font-size: 18px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+
+    .field {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      margin: 8px 0 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+    }
+
+    textarea.field { min-height: 90px; resize: vertical; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 18px 0 10px;
+    }
+
+    .section-title h2 { font-size: 18px; margin: 0; }
+
+    .bottom-nav {
+      position: fixed;
+      z-index: 20;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 3px calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      padding: 5px;
+      font-size: 11px;
+    }
+
+    .nav-btn b { display: block; font-size: 20px; margin-bottom: 3px; }
+    .nav-btn.active { color: var(--green); }
+
+    .hidden { display: none !important; }
+
+    .empty {
+      text-align: center;
+      padding: 28px 12px;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 7px;
+      border-radius: 7px;
+      background: #e8f3ef;
+      color: var(--green);
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 20px;
+    }
+
+    @media (min-width: 600px) {
+      main { padding-top: 20px; }
+      .product-image { height: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <div>
+      <div class="logo">VOZ<span>ZA</span></div>
+      <div class="tagline">Africa connects here ðŸŒ</div>
+    </div>
+    <button class="btn small" onclick="showPage('profile')">My profile</button>
+  </div>
+  <div class="topbar">
+    <input id="search" class="search"
+      placeholder="Search videos, voices and products..."
+      oninput="render()">
+  </div>
+</header>
+
+<main>
+  <div class="notice">
+    ðŸ§ª <b>Testing version:</b> Your posts and products are stored in this
+    browser only. Real accounts, shared storage and payments require a backend.
+  </div>
+
+  <section id="feedPage">
+    <div class="stories" id="stories"></div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="setFeed('all',this)">For You</button>
+      <button class="tab" onclick="setFeed('reel',this)">Reels</button>
+      <button class="tab" onclick="setFeed('voice',this)">Voice</button>
+      <button class="tab" onclick="setFeed('news',this)">News</button>
+      <button class="tab" onclick="setFeed('comedy',this)">Comedy</button>
+      <button class="tab" onclick="setFeed('culture',this)">Culture</button>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div class="avatar">V</div>
+        <div class="grow">
+          <b>Create on VOZZA</b>
+          <div class="muted">Share your voice, video or ideas</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="showPage('create')">ï¼‹ Create post</button>
+        <button class="btn light" onclick="showPage('storyCreate')">ï¼‹ Story</button>
+        <button class="btn orange" onclick="showPage('sell')">ï¼‹ Sell product</button>
+      </div>
+    </div>
+
+    <div id="feed"></div>
+  </section>
+
+  <section id="createPage" class="hidden">
+    <div class="card">
+      <h2>Create a post</h2>
+      <form id="postForm">
+        <label>Post type</label>
+        <select class="field" id="postType">
+          <option value="reel">Video / Reel</option>
+          <option value="voice">Voice post</option>
+          <option value="text">Text post</option>
+        </select>
+
+        <label>Category</label>
+        <select class="field" id="postCategory">
+          <option value="news">News</option>
+          <option value="comedy">Comedy</option>
+          <option value="culture">Culture</option>
+          <option value="all">General</option>
+        </select>
+
+        <label>Caption</label>
+        <textarea class="field" id="postCaption"
+          placeholder="What do you want to share?" required></textarea>
+
+        <label>Choose a video or audio file (optional)</label>
+        <input class="field" id="postMedia" type="file"
+          accept="video/*,audio/*">
+
+        <button class="btn" type="submit">Publish post</button>
+      </form>
+      <p class="muted">Browser preview only. Large files are not uploaded to a server.</p>
+    </div>
+  </section>
+
+  <section id="storyCreatePage" class="hidden">
+    <div class="card">
+      <h2>Create a story</h2>
+      <form id="storyForm">
+        <label>Story text</label>
+        <textarea class="field" id="storyText"
+          placeholder="Share an update..." required></textarea>
+        <label>Optional photo or video</label>
+        <input class="field" type="file" id="storyMedia" accept="image/*,video/*">
+        <label><input type="checkbox" id="hideStoryName"> Hide my display name</label>
+        <p class="muted">Stories in this demo do not sync to other users or automatically expire on a server.</p>
+        <button class="btn" type="submit">Publish story</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="sellPage" class="hidden">
+    <div class="card">
+      <h2>Sell a product</h2>
+      <form id="productForm">
+        <label>Product name</label>
+        <input class="field" id="productName" required maxlength="100">
+
+        <label>Description</label>
+        <textarea class="field" id="productDescription" required></textarea>
+
+        <label>Price in Nigerian naira (â‚¦)</label>
+        <input class="field" id="productPrice" type="number" min="1" step="1" required>
+
+        <label>Available quantity</label>
+        <input class="field" id="productStock" type="number" min="1" value="1" required>
+
+        <label>Category</label>
+        <select class="field" id="productCategory">
+          <option>Fashion</option>
+          <option>Phones & electronics</option>
+          <option>Food</option>
+          <option>Beauty</option>
+          <option>Home</option>
+          <option>Other</option>
+        </select>
+
+        <label>Location</label>
+        <input class="field" id="productLocation" placeholder="e.g. Kano, Nigeria">
+
+        <label>Product photos (up to 5)</label>
+        <input class="field" id="productPhotos" type="file" accept="image/*" multiple>
+
+        <label>Optional product video</label>
+        <input class="field" id="productVideo" type="file" accept="video/*">
+
+        <button class="btn orange" type="submit">List product</button>
+      </form>
+      <p class="muted">Do not upload private or sensitive files. This demo stores small previews locally.</p>
+    </div>
+  </section>
+
+  <section id="marketPage" class="hidden">
+    <div class="section-title">
+      <h2>ðŸ›ï¸ VOZZA Marketplace</h2>
+      <button class="btn small" onclick="showPage('sell')">Sell</button>
+    </div>
+    <div class="product-grid" id="products"></div>
+  </section>
+
+  <section id="productPage" class="hidden">
+    <div id="productDetail"></div>
+  </section>
+
+  <section id="profilePage" class="hidden">
+    <div class="card">
+      <div class="row">
+        <div class="avatar">V</div>
+        <div>
+          <h2 style="margin:0">VOZZA Member</h2>
+          <div class="muted">Community creator Â· ðŸ‡³ðŸ‡¬ Nigeria</div>
+        </div>
+      </div>
+      <p>Share your voice. Discover African creators. Buy and sell with your community.</p>
+      <div class="actions">
+        <span class="badge">Creator dashboard demo</span>
+        <span class="badge">Seller profile demo</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Creator earnings (demo)</h3>
+      <p>Gift earnings: <b id="giftTotal">â‚¦0</b></p>
+      <p>Product sales: <b id="salesTotal">â‚¦0</b></p>
+      <p>Referral estimate: <b id="refTotal">â‚¦0</b></p>
+      <p class="muted">These are demonstration values, not withdrawable money.</p>
+      <button class="btn" onclick="showPage('settings')">Settings</button>
+    </div>
+  </section>
+
+  <section id="settingsPage" class="hidden">
+    <div class="card">
+      <h2>Settings</h2>
+      <label>Display name</label>
+      <input class="field" id="displayName" value="VOZZA Member">
+      <label>Language</label>
+      <select class="field">
+        <option>English</option>
+        <option>Hausa</option>
+        <option>Kanuri</option>
+        <option>Fulfulde</option>
+      </select>
+      <label>Country</label>
+      <select class="field">
+        <option>Nigeria â€” NGN</option>
+        <option>Ghana â€” GHS</option>
+        <option>Kenya â€” KES</option>
+        <option>United States â€” USD</option>
+      </select>
+      <label><input type="checkbox"> Enable data saver</label>
+      <br><br>
+      <label><input type="checkbox"> Hide online status</label>
+      <br><br>
+      <button class="btn" onclick="saveSettings()">Save settings</button>
+      <button class="btn light" onclick="clearDemo()">Clear demo data</button>
+    </div>
+  </section>
+
+  <section id="groupsPage" class="hidden">
+    <div class="card">
+      <h2>ðŸ‘¥ VOZZA Groups</h2>
+      <p>Groups for local communities, culture, business and creators.</p>
+      <p class="muted">Shared groups, group admins and moderation require a backend.</p>
+      <button class="btn" onclick="alert('Group creation will be connected to the backend in a later step.')">Create group</button>
+    </div>
+  </section>
+
+  <section id="searchPage" class="hidden">
+    <div class="card">
+      <h2>Search VOZZA</h2>
+      <input class="field" placeholder="Search posts and products" oninput="document.getElementById('search').value=this.value;render();showPage('feed')">
+      <p class="muted">Search this browser's demo posts and product listings.</p>
+    </div>
+  </section>
+
+  <footer>VOZZA Â· Built for Africa ðŸŒ Â· Prototype</footer>
+</main>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="feed" onclick="showPage('feed',this)"><b>âŒ‚</b>Home</button>
+  <button class="nav-btn" data-page="search" onclick="showPage('search',this)"><b>âŒ•</b>Search</button>
+  <button class="nav-btn" data-page="market" onclick="showPage('market',this)"><b>ðŸ›</b>Market</button>
+  <button class="nav-btn" data-page="groups" onclick="showPage('groups',this)"><b>â™§</b>Groups</button>
+  <button class="nav-btn" data-page="profile" onclick="showPage('profile',this)"><b>â—‰</b>Profile</button>
+</nav>
+
+<script>
+"use strict";
+
+const STORAGE_KEY = "vozza_demo_v1";
+let activeFeed = "all";
+let currentPage = "feed";
+let objectUrls = [];
+
+function loadData() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && Array.isArray(saved.posts) && Array.isArray(saved.products)) {
+      return saved;
+    }
+  } catch (error) {
+    console.warn("Could not load demo data.", error);
+  }
+  return { posts: [], products: [], stories: [], likes: [], gifts: 0, sales: 0, referrals: 0 };
+}
+
+let data = loadData();
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    alert("Your browser storage is full. Try using smaller media files.");
+  }
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#039;"
+  })[char]);
+}
+
+function showPage(page, button) {
+  currentPage = page;
+  const ids = [
+    "feed", "create", "storyCreate", "sell", "market",
+    "product", "profile", "settings", "groups", "search"
+  ];
+
+  ids.forEach(id => {
+    const section = document.getElementById(id + "Page");
+    if (section) section.classList.toggle("hidden", id !== page);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(nav => {
+    nav.classList.toggle("active", nav.dataset.page === page);
+  });
+
+  if (page === "market") renderProducts();
+  if (page === "feed") render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function setFeed(type, button) {
+  activeFeed = type;
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+  button.classList.add("active");
+  render();
+}
+
+function renderStories() {
+  const container = document.getElementById("stories");
+  const stories = data.stories.filter(story => Date.now() - story.createdAt < 86400000);
+
+  container.innerHTML =
+    '<div class="story" onclick="showPage(\\'storyCreate\\')"><div class="avatar">ï¼‹</div>Your story</div>' +
+    stories.map(story => `
+      <div class="story" title="${escapeHTML(story.text)}">
+        <div class="avatar">${story.hideName ? "ðŸŒ" : escapeHTML(story.name[0] || "V")}</div>
+        ${story.hideName ? "Community" : escapeHTML(story.name)}
+      </div>
+    `).join("");
+}
+
+function render() {
+  renderStories();
+  const query = (document.getElementById("search")?.value || "").trim().toLowerCase();
+
+  const posts = data.posts.filter(post => {
+    const matchesCategory = activeFeed === "all" ||
+      post.type === activeFeed || post.category === activeFeed;
+    const matchesSearch = !query ||
+      (post.caption + " " + post.name + " " + post.category).toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
+
+  const feed = document.getElementById("feed");
+
+  if (!posts.length) {
+    feed.innerHTML = '<div class="card empty">ðŸŒ<h3>Welcome to VOZZA</h3><p>Your community feed is ready. Create your first post or list a product.</p></div>';
+    return;
+  }
+
+  feed.innerHTML = posts.slice().reverse().map(post => {
+    const liked = data.likes.includes(post.id);
+    let media = "";
+
+    if (post.media) {
+      media = post.mediaType.startsWith("video/")
+        ? `<video class="media" controls playsinline src="${post.media}"></video>`
+        : post.mediaType.startsWith("audio/")
+          ? `<audio class="media" controls src="${post.media}"></audio>`
+          : "";
+    }
+
+    return `
+      <article class="card">
+        <div class="row">
+          <div class="avatar">${escapeHTML(post.name[0] || "V")}</div>
+          <div class="grow">
+            <b>${escapeHTML(post.name)}</b>
+            <div class="muted">${escapeHTML(post.category)} Â· ${new Date(post.createdAt).toLocaleString()}</div>
+          </div>
+          <span class="badge">${escapeHTML(post.type)}</span>
+        </div>
+        <p>${escapeHTML(post.caption)}</p>
+        ${media}
+        <div class="actions">
+          <button class="btn light small" onclick="toggleLike('${post.id}')">${liked ? "â™¥ Liked" : "â™¡ Like"} (${post.likes})</button>
+          <button class="btn light small" onclick="commentPost('${post.id}')">ðŸ’¬ Comment</button>
+          <button class="btn light small" onclick="sharePost('${post.id}')">â†— Share</button>
+          <button class="btn orange small" onclick="sendGift('${post.id}')">ðŸŽ Gift</button>
+        </div>
+        ${post.comments.length ? `<div class="muted" style="margin-top:12px">${post.comments.map(comment => "ðŸ’¬ " + escapeHTML(comment)).join("<br>")}</div>` : ""}
+      </article>`;
+  }).join("");
+}
+
+function toggleLike(id) {
+  const post = data.posts.find(item => item.id === id);
+  if (!post) return;
+
+  if (data.likes.includes(id)) {
+    data.likes = data.likes.filter(item => item !== id);
+    post.likes = Math.max(0, post.likes - 1);
+  } else {
+    data.likes.push(id);
+    post.likes++;
+  }
+  saveData();
+  render();
+}
+
+function commentPost(id) {
+  const comment = prompt("Write your comment:");
+  if (!comment || !comment.trim()) return;
+  const post = data.posts.find(item => item.id === id);
+  if (!post) return;
+  post.comments.push(comment.trim().slice(0, 500));
+  saveData();
+  render();
+}
+
+async function sharePost(id) {
+  const link = location.href.split("#")[0] + "#post-" + encodeURIComponent(id);
+  const post = data.posts.find(item => item.id === id);
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "VOZZA post", text: post?.caption || "See this post", url: link });
+      return;
+    } catch (error) {}
+  }
+
+  try {
+    await navigator.clipboard.writeText(link);
+    alert("Demo post link copied. A real public link requires hosting and backend support.");
+  } catch (error) {
+    prompt("Copy this demo link:", link);
+  }
+}
+
+function sendGift(id) {
+  const amount = prompt("Choose a demo gift: 200, 500, 1000, 1500, 2000, 5000 or 7000");
+  const allowed = [200, 500, 1000, 1500, 2000, 5000, 7000];
+  const value = Number(amount);
+
+  if (!allowed.includes(value)) {
+    alert("Please enter one of the listed gift values.");
+    return;
+  }
+
+  alert("Demo only: no money was charged and no creator was paid.");
+}
+
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) return resolve("");
+    if (file.size > 2 * 1024 * 1024) {
+      return reject(new Error("For this browser demo, each file must be 2 MB or smaller."));
+    }
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("Could not read the selected file."));
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("postForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  try {
+    const file = document.getElementById("postMedia").files[0];
+    const media = await fileToDataURL(file);
+    data.posts.push({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      name: document.getElementById("displayName")?.value || "VOZZA Member",
+      type: document.getElementById("postType").value,
+      category: document.getElementById("postCategory").value,
+      caption: document.getElementById("postCaption").value.trim(),
+      media,
+      mediaType: file?.type || "",
+      likes: 0,
+      comments: [],
+      createdAt: Date.now()
+    });
+
+    saveData();
+    event.target.reset();
+    showPage("feed");
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+document.getElementById("storyForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  try {
+    const file = document.getElementById("storyMedia").files[0];
+    const media = await fileToDataURL(file);
+    data.stories.push({
+      id: String(Date.now()),
+      name: document.getElementById("displayName")?.value || "VOZZA Member",
+      text: document.getElementById("storyText").value.trim(),
+      hideName: document.getElementById("hideStoryName").checked,
+      media,
+      createdAt: Date.now()
+    });
+    saveData();
+    event.target.reset();
+    renderStories();
+    showPage("feed");
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+document.getElementById("productForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  try {
+    const files = [...document.getElementById("productPhotos").files];
+    if (files.length > 5) {
+      alert("Please choose no more than 5 product photos.");
+      return;
+    }
+
+    const photos = await Promise.all(files.map(fileToDataURL));
+    const videoFile = document.getElementById("productVideo").files[0];
+    const video = await fileToDataURL(videoFile);
+
+    const product = {
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+      name: document.getElementById("productName").value.trim(),
+      description: document.getElementById("productDescription").value.trim(),
+      price: Number(document.getElementById("productPrice").value),
+      stock: Number(document.getElementById("productStock").value),
+      category: document.getElementById("productCategory").value,
+      location: document.getElementById("productLocation").value.trim(),
+      photos,
+      video,
+      createdAt: Date.now()
+    };
+
+    data.products.push(product);
+    saveData();
+    event.target.reset();
+    alert("Product added to this browser's demo marketplace.");
+    showPage("market");
+  } catch (error) {
+    alert(error.message);
+  }
+});
+
+function renderProducts() {
+  const query = (document.getElementById("search")?.value || "").toLowerCase();
+  const products = data.products.filter(product =>
+    (product.name + " " + product.description + " " + product.category + " " + product.location)
+      .toLowerCase().includes(query)
+  );
+
+  document.getElementById("products").innerHTML = products.length
+    ? products.slice().reverse().map(product => `
+      <article class="card">
+        ${product.photos?.[0]
+          ? `<img class="product-image" src="${product.photos[0]}" alt="${escapeHTML(product.name)}">`
+          : '<div class="product-image" style="display:grid;place-items:center">ðŸ›ï¸</div>'}
+        <h3>${escapeHTML(product.name)}</h3>
+        <div class="price">â‚¦${product.price.toLocaleString("en-NG")}</div>
+        <div class="muted">${escapeHTML(product.category)} Â· ${escapeHTML(product.location || "Location not added")}</div>
+        <p>${escapeHTML(product.description.slice(0, 100))}</p>
+        <button class="btn" onclick="viewProduct('${product.id}')">View product</button>
+      </article>`).join("")
+    : '<div class="card empty" style="grid-column:1/-1">No products yet. Add your first product.</div>';
+}
+
+function viewProduct(id) {
+  const product = data.products.find(item => item.id === id);
+  if (!product) return;
+
+  document.getElementById("productDetail").innerHTML = `
+    <div class="card">
+      <button class="btn light small" onclick="showPage('market')">â† Back to marketplace</button>
+      ${product.photos?.map(photo => `<img class="media" src="${photo}" alt="${escapeHTML(product.name)}">`).join("") || ""}
+      ${product.video ? `<video class="media" controls playsinline src="${product.video}"></video>` : ""}
+      <h2>${escapeHTML(product.name)}</h2>
+      <div class="price">â‚¦${product.price.toLocaleString("en-NG")}</div>
+      <p>${escapeHTML(product.description)}</p>
+      <p class="muted">Category: ${escapeHTML(product.category)}</p>
+      <p class="muted">Location: ${escapeHTML(product.location || "Not provided")}</p>
+      <p class="muted">Quantity listed: ${product.stock}</p>
+      <button class="btn orange" onclick="buyProduct('${product.id}')">Buy product (demo)</button>
+      <button class="btn light" onclick="shareProduct('${product.id}')">Share product</button>
+      <p class="muted">No real order or payment is made in this prototype.</p>
+    </div>`;
+  showPage("product");
+}
+
+function buyProduct(id) {
+  const product = data.products.find(item => item.id === id);
+  if (!product) return;
+  alert("Demo checkout for " + product.name + ". Real checkout requires a secure server and Paystack integration.");
+}
+
+async function shareProduct(id) {
+  const product = data.products.find(item => item.id === id);
+  if (!product) return;
+  const link = location.href.split("#")[0] + "#buy-" + encodeURIComponent(id);
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: product.name, text: product.description, url: link });
+      return;
+    } catch (error) {}
+  }
+
+  try {
+    await navigator.clipboard.writeText(link);
+    alert("Demo product link copied. Public product pages need hosting and backend support.");
+  } catch (error) {
+    prompt("Copy this demo link:", link);
+  }
+}
+
+function saveSettings() {
+  const name = document.getElementById("displayName").value.trim();
+  if (!name) {
+    alert("Please enter a display name.");
+    return;
+  }
+  localStorage.setItem("vozza_display_name", name);
+  alert("Display name saved on this browser.");
+}
+
+function clearDemo() {
+  if (!confirm("Delete your VOZZA demo posts, stories and products from this browser?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  data = loadData();
+  render();
+  renderProducts();
+  alert("Demo data cleared from this browser.");
+}
+
